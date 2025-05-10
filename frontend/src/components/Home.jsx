@@ -19,7 +19,9 @@ const Home = () => {
 
       const data = await response.json();
       if (data.questions) {
-        navigate("/quiz", { state: { questions: data.questions } });
+        navigate("/quiz", {
+          state: { questions: data.questions, topic: topic },
+        });
       }
     } catch (error) {
       console.error("Failed to generate quiz:", error);

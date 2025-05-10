@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const QuizPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const topic = location.state?.topic;
   const questions = location.state?.questions || [];
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState(
@@ -55,6 +56,7 @@ const QuizPage = () => {
         <div className="col-md-8">
           <div className="card">
             <div className="card-body">
+              <h4 className="card-title mb-4">{topic}</h4>
               <h5 className="card-title mb-4">
                 Question {currentQuestion + 1} of {questions.length}
               </h5>
