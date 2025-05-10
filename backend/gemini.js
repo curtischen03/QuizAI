@@ -12,15 +12,26 @@ export async function generateQuizQuestions(topic, numQuestions) {
     const prompt = `Generate ${numQuestions} multiple-choice quiz questions about ${topic}. 
     For each question, provide:
     1. The question text
-    2. Four possible answers (labeled A, B, C, D)
-    3. The correct answer letter
+    2. Four possible answers
+    3. The correct answer (must be the exact text of the correct option)
     
     Format the response as a JSON array of objects, where each object has the properties:
-    - question: string
-    - options: array of 4 strings
-    - answer: string (the correct option)
+    - question: string (the question text)
+    - options: array of 4 strings (the possible answers)
+    - answer: string (must be EXACTLY the same text as the correct option from the options array)
     
-    Make sure the questions are challenging but fair, and the incorrect options are plausible.`;
+    Example format:
+    {
+      "question": "What is the capital of France?",
+      "options": ["London", "Berlin", "Paris", "Madrid"],
+      "answer": "Paris"
+    }
+    
+    Make sure:
+    1. The answer string matches EXACTLY with one of the options
+    2. Questions are challenging but fair
+    3. Incorrect options are plausible
+    4. Each question has exactly 4 options`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
@@ -30,7 +41,24 @@ export async function generateQuizQuestions(topic, numQuestions) {
       // Clean the response text to ensure it's valid JSON
       const cleanedText = text.replace(/```json\n?|\n?```/g, "").trim();
       const questions = JSON.parse(cleanedText);
-      return questions;
+
+      // Validate that each question's answer matches exactly with one of its options
+      const validatedQuestions = questions.map((question) => {
+        if (!question.options.includes(question.answer)) {
+          // If answer doesn't match exactly, find the matching option
+          const matchingOption = question.options.find(
+            (option) =>
+              option.toLowerCase().trim() ===
+              question.answer.toLowerCase().trim()
+          );
+          if (matchingOption) {
+            question.answer = matchingOption; // Use the exact option text
+          }
+        }
+        return question;
+      });
+
+      return validatedQuestions;
     } catch (parseError) {
       console.error("Error parsing Gemini response:", parseError);
       throw new Error("Failed to parse quiz questions");
