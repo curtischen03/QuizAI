@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 export async function generateQuizQuestions(topic, numQuestions) {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `Generate ${numQuestions} multiple-choice quiz questions about ${topic}. 
     For each question, provide:
@@ -71,7 +71,7 @@ export async function generateQuizQuestions(topic, numQuestions) {
 
 async function analyze_text(context, task, output_constraint) {
   const response = await genAI.models.generateContent({
-    model: "gemini-2.0-flash",
+    model: "gemini-2.5-flash",
     contents: `Context:${context}, Task:${task}, Output Constraint:${output_constraint}`,
     config: {
       tools: [{ googleSearch: {} }],
