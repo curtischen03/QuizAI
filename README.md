@@ -3,7 +3,7 @@
 
 **QuizAI** is an intelligent, full-stack web application that harnesses the power of **Google’s Gemini AI** to generate personalized quizzes in real time. Whether you're testing your fandom knowledge or learning a new subject, QuizAI creates a seamless and interactive quiz experience tailored to your interests.
 
-## 🌐 Live Demo (Click to redirect to Youtube)
+## 🌐 Demo (Click to redirect to Youtube)
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lY8MTFlNfO0/0.jpg)](https://www.youtube.com/watch?v=lY8MTFlNfO0)
 
